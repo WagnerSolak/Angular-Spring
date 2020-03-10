@@ -15,7 +15,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.9.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
@@ -25,8 +25,8 @@
 	</properties>
 
 	<dependencies>
-	
-	<!-- auxilia na configuração de hibernate, bco, etc spring-boot-starter-web 
+
+		<!-- auxilia na configuração de hibernate, bco, etc spring-boot-starter-web 
 			-> já têm tomcat acoplado spring-boot-devtools -> faz deploy automaticamente 
 			spring-boot-starter-test -> para realização de testes -->
 		<dependency>
@@ -48,14 +48,22 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		
-		
+
+		<!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>5.0.4</version>
+		</dependency>
+
+
+
 	</dependencies>
 
 	<build>

@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ public class CategoriaResource { //recurso de categoria
 	
 	@PostMapping
 	//@ResponseStatus(HttpStatus.CREATED) não preciso mais da anotação, porque o created(uri) já define o status 
-	public ResponseEntity<Categoria> criar(@RequestBody Categoria categoria, HttpServletResponse response){
+	public ResponseEntity<Categoria> criar(@Valid @RequestBody Categoria categoria, HttpServletResponse response){
 		Categoria cataegoriaSalva = categoriaRepository.save(categoria);
 		
 		//Código para o header informar em Location o value do post efetuado

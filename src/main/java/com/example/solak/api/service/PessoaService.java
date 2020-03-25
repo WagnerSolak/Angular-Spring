@@ -15,11 +15,23 @@ public class PessoaService {
 	private PessoaRepository pessoaRepository;
 	
 	public Pessoa atualizar(Long codigo, Pessoa pessoa){
+		Pessoa pessoaSalva = buscarPessoaPorCodigo(codigo);
+		BeanUtils.copyProperties(pessoa, pessoaSalva, "codigo"); // copia as propriedades, passando dequal objeto? para qual objeto? sem pegar o código, pois este é nulo!
+		return pessoaRepository.save(pessoaSalva);
+	}
+
+	private Pessoa buscarPessoaPorCodigo(Long codigo) {
 		Pessoa pessoaSalva = pessoaRepository.findOne(codigo);
 		if(pessoaSalva == null){
 			throw new EmptyResultDataAccessException(1); //lança exceção (1) -> esperava ao menos 1 elemento, e assim retorna 404
 		}
-		BeanUtils.copyProperties(pessoa, pessoaSalva, "codigo"); // copia as propriedades, passando dequal objeto? para qual objeto? sem pegar o código, pois este é nulo!
-		return pessoaRepository.save(pessoaSalva);
+		return pessoaSalva;
+	}
+
+	public void atualizarStatus(Long codigo, Boolean status) {
+		Pessoa pessoaSalva = buscarPessoaPorCodigo(codigo);
+		pessoaSalva.setStatusAtivo(status);
+		pessoaRepository.save(pessoaSalva);
+		
 	}
 }

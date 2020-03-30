@@ -46,7 +46,7 @@ public class Lancamento {
 	@Column(name = "status")
 	private Boolean statusAberto;
 	
-	@Column(name = "nuemro_documento")
+	@Column(name = "numero_documento")
 	private Integer numeroDocumento;
 	
 	@ManyToOne

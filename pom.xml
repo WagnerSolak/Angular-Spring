@@ -43,7 +43,7 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		
+
 		<!-- Dependencies for Unit Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -51,24 +51,32 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- captura a exceção -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.9</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		
+
 		<!-- date hibernate -> bco -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-java8</artifactId>
 		</dependency>
-		
-		<!-- java -> json -->
+
+		<!-- java 8 -> json -->
 		<dependency>
-		    <groupId>com.fasterxml.jackson.datatype</groupId>
-		    <artifactId>jackson-datatype-jsr310</artifactId>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
-		
+
 
 
 	</dependencies>

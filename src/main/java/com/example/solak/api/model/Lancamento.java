@@ -15,8 +15,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "lancamento")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Lancamento {
 	
 	@Id
@@ -56,6 +59,8 @@ public class Lancamento {
 	@ManyToOne
 	@JoinColumn(name = "codigo_pessoa")
 	private Pessoa pessoa;
+	
+	
 
 	public Long getCodigo() {
 		return codigo;

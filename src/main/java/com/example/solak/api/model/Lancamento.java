@@ -52,10 +52,12 @@ public class Lancamento {
 	@Column(name = "numero_documento")
 	private Integer numeroDocumento;
 	
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "codigo_categoria")
 	private Categoria categoria;
 	
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "codigo_pessoa")
 	private Pessoa pessoa;

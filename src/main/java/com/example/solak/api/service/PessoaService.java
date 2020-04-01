@@ -20,7 +20,7 @@ public class PessoaService {
 		return pessoaRepository.save(pessoaSalva);
 	}
 
-	private Pessoa buscarPessoaPorCodigo(Long codigo) {
+	public Pessoa buscarPessoaPorCodigo(Long codigo) {
 		Pessoa pessoaSalva = pessoaRepository.findOne(codigo);
 		if(pessoaSalva == null){
 			throw new EmptyResultDataAccessException(1); //lança exceção (1) -> esperava ao menos 1 elemento, e assim retorna 404

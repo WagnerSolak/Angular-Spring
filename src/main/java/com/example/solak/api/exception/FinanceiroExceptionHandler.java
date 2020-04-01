@@ -34,7 +34,7 @@ public class FinanceiroExceptionHandler extends ResponseEntityExceptionHandler{
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		
-		String messageForUser = messageSource.getMessage("message.invalid", null, LocaleContextHolder.getLocale());
+		String messageForUser = messageSource.getMessage("mensagem.invalida", null, LocaleContextHolder.getLocale());
 		String messageForDevelopment = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
 		List<Error> errors = Arrays.asList(new Error(messageForDevelopment, messageForUser));
 		

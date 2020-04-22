@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,12 +33,14 @@ public class CategoriaResource { //recurso de categoria
 	private ApplicationEventPublisher publisher;
 	
 	@GetMapping //somente um mapeamento por método, ao menos que seja informado incremento ex.: /diversas, ai ele busca em categorias e depois em diversas
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA')")
 	public List<Categoria> listar(){
 		return categoriaRepository.findAll();
 	}
 	
 	@PostMapping
 	//@ResponseStatus(HttpStatus.CREATED) não preciso mais da anotação, porque o created(uri) já define o status 
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CATEGORIA')")
 	public ResponseEntity<Categoria> criar(@Valid @RequestBody Categoria categoria, HttpServletResponse response){
 		Categoria cataegoriaSalva = categoriaRepository.save(categoria);
 		
@@ -49,6 +51,7 @@ public class CategoriaResource { //recurso de categoria
 	
 	@GetMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.CREATED)
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA')")
 	public ResponseEntity<Categoria> buscarPorCodigo(@PathVariable Long codigo){
 		Categoria categoria = categoriaRepository.findOne(codigo);
 		

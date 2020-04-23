@@ -8,6 +8,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.solak.api.event.ResourceCreatedEvent;
 import com.example.solak.api.model.Pessoa;
 import com.example.solak.api.repository.PessoaRepository;
+import com.example.solak.api.repository.filter.PessoaFilter;
+import com.example.solak.api.repository.projections.SintesePessoa;
 import com.example.solak.api.service.PessoaService;
 
 @RestController
@@ -45,6 +49,12 @@ public class PessoaResource {
 		return pessoaRepository.findAll();
 	}
 	
+	@GetMapping(params = "sintese")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA')")
+	public Page<SintesePessoa> sintetizar(PessoaFilter pessoaFilter, Pageable pageable){
+		return pessoaRepository.sintetizar(pessoaFilter, pageable);
+	}
+	
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA')")
 	public ResponseEntity<Pessoa> criar(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response){
@@ -54,6 +64,7 @@ public class PessoaResource {
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(pessoaSalva);
 	}
+	
 	
 	@GetMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.CREATED)

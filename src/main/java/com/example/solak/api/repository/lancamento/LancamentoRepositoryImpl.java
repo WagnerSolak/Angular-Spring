@@ -16,9 +16,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
+import com.example.solak.api.model.Categoria_;
 import com.example.solak.api.model.Lancamento;
 import com.example.solak.api.model.Lancamento_;
+import com.example.solak.api.model.Pessoa_;
 import com.example.solak.api.repository.filter.LancamentoFilter;
+import com.example.solak.api.repository.projections.SinteseLancamento;
 
 public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 
@@ -35,6 +38,7 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 		Predicate[] predicates = adicionarRestricoes(lancamentoFilter, builder, root);
 		criteria.where(predicates);
 
+		//consulta
 		TypedQuery<Lancamento> query = manager.createQuery(criteria);
 
 		// return query.getResultList();
@@ -76,7 +80,7 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 		return predicates.toArray(new Predicate[predicates.size()]);
 	}
 
-	private void adicionarDetalhesDaPaginacao(TypedQuery<Lancamento> query, Pageable pageable) {
+	private void adicionarDetalhesDaPaginacao(TypedQuery<?> query, Pageable pageable) {
 		int paginaAtual = pageable.getPageNumber();
 		int totalRegistroPorPagina = pageable.getPageSize();
 		int primeiroRegistroDaPagina = paginaAtual * totalRegistroPorPagina;
@@ -95,6 +99,38 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 		
 		criteria.select(builder.count(root));  // builder.count(root) -> contador 
 		return manager.createQuery(criteria).getSingleResult();
+	}
+
+
+
+	@Override
+	public Page<SinteseLancamento> sintetizar(LancamentoFilter lancamentoFilter, Pageable pageable) {
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+		CriteriaQuery<SinteseLancamento> criteria = builder.createQuery(SinteseLancamento.class);
+		Root<Lancamento> root = criteria.from(Lancamento.class);
+		
+		criteria.select(builder.construct(SinteseLancamento.class
+				, root.get(Lancamento_.codigo)
+				, root.get(Lancamento_.descricao)
+				, root.get(Lancamento_.dataVencimento)
+				, root.get(Lancamento_.dataPagamento)
+				, root.get(Lancamento_.valor)
+				, root.get(Lancamento_.statusAberto)
+				, root.get(Lancamento_.tipo)
+				, root.get(Lancamento_.categoria).get(Categoria_.nome)
+				, root.get(Lancamento_.pessoa).get(Pessoa_.nome)));
+		
+		// restrictions
+		Predicate[] predicates = adicionarRestricoes(lancamentoFilter, builder, root);
+		criteria.where(predicates);
+
+		//consulta
+		TypedQuery<SinteseLancamento> query = manager.createQuery(criteria);
+
+		//detalhes da paginação
+		adicionarDetalhesDaPaginacao(query, pageable);
+
+		return new PageImpl<>(query.getResultList(), pageable, total(lancamentoFilter));
 	}
 
 }

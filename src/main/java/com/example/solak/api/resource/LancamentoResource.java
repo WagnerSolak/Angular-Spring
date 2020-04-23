@@ -30,6 +30,7 @@ import com.example.solak.api.exception.FinanceiroExceptionHandler.Error;
 import com.example.solak.api.model.Lancamento;
 import com.example.solak.api.repository.LancamentoRepository;
 import com.example.solak.api.repository.filter.LancamentoFilter;
+import com.example.solak.api.repository.projections.SinteseLancamento;
 import com.example.solak.api.service.LancamentoService;
 import com.example.solak.api.service.exception.PessoaInexistenteOuComStatusInativoException;
 
@@ -53,6 +54,12 @@ public class LancamentoResource {
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO')")
 	public Page<Lancamento> consultar(LancamentoFilter lancamentoFilter, Pageable pageable){
 		return lancamentoRepository.filtrar(lancamentoFilter, pageable);
+	}
+	
+	@GetMapping(params = "sintese")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO')")
+	public Page<SinteseLancamento> sintetizar(LancamentoFilter lancamentoFilter, Pageable pageable){
+		return lancamentoRepository.sintetizar(lancamentoFilter, pageable);
 	}
 	
 	@GetMapping("/{codigo}")

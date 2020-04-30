@@ -18,7 +18,6 @@ import org.springframework.util.StringUtils;
 
 
 import com.example.solak.api.model.Pessoa;
-import com.example.solak.api.model.Pessoa_;
 import com.example.solak.api.repository.filter.PessoaFilter;
 import com.example.solak.api.repository.projections.SintesePessoa;
 
@@ -36,9 +35,9 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQuery{
 		Root<Pessoa> root = criteria.from(Pessoa.class);
 		
 		criteria.select(builder.construct(SintesePessoa.class
-				, root.get(Pessoa_.codigo)
-				, root.get(Pessoa_.nome)
-				, root.get(Pessoa_.email)));
+				, root.get("codigo")
+				, root.get("nome")
+				, root.get("email")));
 		
 		Predicate[] predicates = adicionarRestricoes(pessoaFilter, builder, root);
 		criteria.where(predicates);
@@ -64,12 +63,12 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQuery{
 		List<Predicate> predicates = new ArrayList<>();
 
 		if (!StringUtils.isEmpty(pessoaFilter.getNome())) {
-			predicates.add(builder.like(builder.lower(root.get(Pessoa_.nome)),
+			predicates.add(builder.like(builder.lower(root.get("nome")),
 					"%" + pessoaFilter.getNome().toLowerCase() + "%"));
 		}
 
 		if (!StringUtils.isEmpty(pessoaFilter.getEmail())) {
-			predicates.add(builder.like(builder.lower(root.get(Pessoa_.email)),
+			predicates.add(builder.like(builder.lower(root.get("email")),
 					"%" + pessoaFilter.getEmail().toLowerCase() + "%"));
 		}
 

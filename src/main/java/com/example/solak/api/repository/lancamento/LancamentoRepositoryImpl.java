@@ -16,10 +16,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
-import com.example.solak.api.model.Categoria_;
+
 import com.example.solak.api.model.Lancamento;
-import com.example.solak.api.model.Lancamento_;
-import com.example.solak.api.model.Pessoa_;
 import com.example.solak.api.repository.filter.LancamentoFilter;
 import com.example.solak.api.repository.projections.SinteseLancamento;
 
@@ -55,26 +53,36 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 		List<Predicate> predicates = new ArrayList<>();
 
 		if (!StringUtils.isEmpty(lancamentoFilter.getDescricao())) {
-			predicates.add(builder.like(builder.lower(root.get(Lancamento_.descricao)),
+			predicates.add(builder.like(builder.lower(root.get("descricao")),
 					"%" + lancamentoFilter.getDescricao().toLowerCase() + "%"));
+					
+			//uso descontinuado do Metamodel com JpaModelGen
+			/*predicates.add(builder.like(builder.lower(root.get(Lancamento_.descricao)),
+					"%" + lancamentoFilter.getDescricao().toLowerCase() + "%"));*/
 		}
 
 		if (lancamentoFilter.getDataVencimentoDe() != null) {
-			predicates.add(builder.greaterThanOrEqualTo(root.get(Lancamento_.dataVencimento),
+			predicates.add(builder.greaterThanOrEqualTo(root.get("dataVencimento"),
 					lancamentoFilter.getDataVencimentoDe()));
+			
+			//uso descontinuado do Metamodel com JpaModelGen
+			/*predicates.add(builder.greaterThanOrEqualTo(root.get(Lancamento_.dataVencimento),
+					lancamentoFilter.getDataVencimentoDe()));*/
 		}
 
 		if (lancamentoFilter.getDataVencimentoAte() != null) {
-			predicates.add(builder.lessThanOrEqualTo(root.get(Lancamento_.dataVencimento),
+			predicates.add(builder.lessThanOrEqualTo(root.get("dataVencimento"),
 					lancamentoFilter.getDataVencimentoAte()));
 		}
 
 		if (lancamentoFilter.getValorDe() != null) {
-			predicates.add(builder.greaterThanOrEqualTo(root.get(Lancamento_.valor), lancamentoFilter.getValorDe()));
+			predicates.add(builder.greaterThanOrEqualTo(root.get("valor"),
+					lancamentoFilter.getValorDe()));
 		}
 
 		if (lancamentoFilter.getDataVencimentoAte() != null) {
-			predicates.add(builder.lessThanOrEqualTo(root.get(Lancamento_.valor), lancamentoFilter.getValorAte()));
+			predicates.add(builder.lessThanOrEqualTo(root.get("valor"),
+					lancamentoFilter.getValorAte()));
 		}
 
 		return predicates.toArray(new Predicate[predicates.size()]);
@@ -110,15 +118,19 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 		Root<Lancamento> root = criteria.from(Lancamento.class);
 		
 		criteria.select(builder.construct(SinteseLancamento.class
-				, root.get(Lancamento_.codigo)
-				, root.get(Lancamento_.descricao)
-				, root.get(Lancamento_.dataVencimento)
-				, root.get(Lancamento_.dataPagamento)
-				, root.get(Lancamento_.valor)
-				, root.get(Lancamento_.statusAberto)
-				, root.get(Lancamento_.tipo)
-				, root.get(Lancamento_.categoria).get(Categoria_.nome)
-				, root.get(Lancamento_.pessoa).get(Pessoa_.nome)));
+				, root.get("codigo")
+				, root.get("descricao")
+				, root.get("dataVencimento")
+				, root.get("dataPagamento")
+				, root.get("valor")
+				, root.get("statusAberto")
+				, root.get("tipo")
+				, root.join("categoria").get("nome")
+				, root.join("pessoa").get("nome")));
+		
+				//uso descontinuado do Metamodel com JpaModelGen
+				//, root.get(Lancamento_.categoria).get(Categoria_.nome)
+				//, root.get(Lancamento_.pessoa).get(Pessoa_.nome)));
 		
 		// restrictions
 		Predicate[] predicates = adicionarRestricoes(lancamentoFilter, builder, root);

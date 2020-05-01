@@ -24,7 +24,7 @@ public class TokenResource {
 		Cookie cookie = new Cookie("refreshToken", null);
 		cookie.setHttpOnly(true);
 		//cookie.setSecure(false);
-		cookie.setSecure(financeiroApiProperty.getSeguranca().isEnableHttp());
+		cookie.setSecure(financeiroApiProperty.getSeguranca().isEnableHttps());
 		cookie.setPath(req.getContextPath() + "/oauth/token");
 		cookie.setMaxAge(0);
 		

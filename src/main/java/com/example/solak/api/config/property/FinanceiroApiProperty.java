@@ -2,6 +2,8 @@ package com.example.solak.api.config.property;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+
+
 @ConfigurationProperties("financeiro")
 public class FinanceiroApiProperty {
 
@@ -25,14 +27,14 @@ public class FinanceiroApiProperty {
 	
 	public static class Seguranca{
 		
-		private boolean enableHttp;
+		private boolean enableHttps;
 
-		public boolean isEnableHttp() {
-			return enableHttp;
+		public boolean isEnableHttps() {
+			return enableHttps;
 		}
 
-		public void setEnableHttp(boolean enableHttp) {
-			this.enableHttp = enableHttp;
+		public void setEnableHttps(boolean enableHttps) {
+			this.enableHttps = enableHttps;
 		}
 
 	}
